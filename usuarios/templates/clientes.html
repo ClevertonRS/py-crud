@@ -1,0 +1,68 @@
+{% extends 'base.html' %} {% block conteudo %}
+<div class="max-w-7xl mx-auto p-8">
+  <h1 class="text-3xl font-bold mb-8">Pacientes</h1>
+  <div class="grid grid-cols-2 gap-8">
+    <!-- LISTA DE PACIENTES -->
+    <div class="bg-white rounded-xl shadow p-6">
+      <h2 class="text-xl font-semibold mb-4">Lista de Pacientes</h2>
+      <ul class="space-y-4">
+        {% for cliente in clientes %}
+        <li class="border rounded-lg p-4 fl ex justify-between items-center">
+          <div>
+            <p class="font-medium">{{ cliente.nome }}</p>
+            <p class="text-sm text-gray -500">{{ cliente.email }}</p>
+          </div>
+          <span
+            class="text-sm {% if cliente.queixa == 'D' %} bg-purple-100 text-purple-700 {% elif cliente.queixa == 'A' %} bg-yellow-100 text-yellow-700 {% endif %} px-3 py-1 rounded"
+            >{{ cliente.get_queixa_display }}</span
+          >
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <!-- FORMULÁRIO -->
+    <div class="bg-white rounded-xl shadow p-6">
+      <h2 class="text-xl font-semibold mb-4">Cadastrar Paciente</h2>
+      {% for message in messages %}
+      <div class="{{message.tags}} p-4 rounded mb-2">{{ message }}</div>
+      {% endfor %}
+      <form method="POST" action="{% url 'clientes' %}" class="space-y-4">
+        {% csrf_token %}
+        <div>
+          <label class="block text-sm fon t-medium mb-1">Nome</label>
+          <input
+            type="text"
+            name="nome"
+            class="w-full border rou nded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:rin g-blue-500"
+          />
+        </div>
+        <div>
+          <label class="block text-sm fon t-medium mb-1">Email</label>
+          <input
+            type="email"
+            name="email"
+            class="w-full border rou nded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:rin g-blue-500"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Queixa Principal</label>
+          <select
+            name="queixa"
+            class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Selecion e...</option>
+            <option value="D">Depressão</option>
+            <option value="A">Ansiedade</option>
+          </select>
+        </div>
+        <button
+          type="submit"
+          class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition text-md font-medium"
+        >
+          Cadastrar Paciente
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
